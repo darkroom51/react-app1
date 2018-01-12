@@ -1,32 +1,16 @@
 import React, {Component} from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer'
+import MenuItem from 'material-ui/MenuItem'
 
-
+import Counter from './Counter'
 
 class App extends Component {
     //initial state of comp
     state = {
-        counter : 0,
-        isDrawerOpen : false
-    }
-
-    componentDidMount(){ // function componentDidMount() to samo co componentDidMount = () => {}, ale to reactowe funkcje i maja zbindowany this, wiec moga bys funkcjami zwyklymi a nie strzalkowymi
-        this.setState({ //tylko w ten sposob zmianiamy properties state'u, nigdy beposrednio
-            counter : this.state.counter + 1
-        }, () => console.log('state has been updated'))
-    }
-
-    onMinusClickHandler  = () => {
-        this.setState({ //tylko w ten sposob zmianiamy properties state'u, nigdy beposrednio
-            counter : this.state.counter - 1
-        }, () => console.log('state has been updated'))
-    }
-
-    onPlusClickHandler  = () => {
-        this.setState({ //tylko w ten sposob zmianiamy properties state'u, nigdy beposrednio
-            counter : this.state.counter + 1
-        }, () => console.log('state has been updated'))
+        isDrawerOpen : false,
+        menuItems: ['First drawer item', 'Second drawer item', 'Third drawer item']
     }
 
     drawerToggle = () => {
@@ -40,21 +24,28 @@ class App extends Component {
         return (
             <MuiThemeProvider>
                 <div>
-                <AppBar
-                    title="My First App"
-                    iconClassNameRight="muidocs-icon-navigation-expand-more"
-                    /*onLeftIconButtonClick={this.drawerToggle()}*/
-                />
+                    <AppBar
+                        title="My First App"
+                        onLeftIconButtonClick={this.drawerToggle}
+                    />
+                    <Drawer
+                        docked={false}
+                        width={250}
+                        open={this.state.isDrawerOpen}
+                        onRequestChange={this.drawerToggle}
+                    >
+                        {/*MENU FROM DB FOR EXAMPLE*/}
+                        {
+                            this.state.menuItems
+                                .map((textOnMenu, index) => (
+                                    <MenuItem key={index}>
+                                        {textOnMenu}
+                                    </MenuItem>
+                                ))
+                        }
+                    </Drawer>
 
-            <div>
-                <h1>{this.state.counter}</h1>
-                <button onClick={this.onMinusClickHandler}>
-                    -
-                </button>
-                <button onClick={this.onPlusClickHandler}>
-                    +
-                </button>
-            </div>
+                    <Counter />
                 </div>
             </MuiThemeProvider>
         )
